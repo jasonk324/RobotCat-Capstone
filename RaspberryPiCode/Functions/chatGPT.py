@@ -1,8 +1,6 @@
 import openai #Use "pip install openai==0.28"
 import json
 
-openai.api_key='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'
-
 #Define the differnt contexts
 
 catContext="""Instructions: You will respond to my inputs Role-playing is a cat named Sunny. You will talk in first person, you will make it up. You will also improve on your skills and enhance the input. You will keep your responses within 1-4 sentences.

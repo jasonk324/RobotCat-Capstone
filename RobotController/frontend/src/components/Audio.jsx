@@ -3,8 +3,10 @@ import MicOff from "../assets/AudioIcons/MicOff.png"
 import MicOn from "../assets/AudioIcons/MicOn.png"
 import Refresh from "../assets/Buttons/Refresh.png"
 import HelloKitty from "../assets/Logos/HelloKittyBlackIcon.png"
+import { useButtons } from '../contexts/ButtonsContext'
 
 const Audio = () => {
+    const { Audio } = useButtons()
     const {
       transcript,
       listening,
