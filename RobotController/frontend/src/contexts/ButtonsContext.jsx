@@ -49,20 +49,25 @@ export function ButtonsProvider({ children }) {
     headRight: { get: headRight, set: setHeadRight }
   }
 
-  const [mic, setMic] = useState(false)
+  const [newConvo, setNewConvo] = useState(true)
   const [transcript, setTranscript] = useState("")
   const [response, setReponse] = useState("")
 
   const Audio = {
-    mic: { get: mic, set: setMic },
+    newConvo: { get: newConvo, set: setNewConvo },
     transcript: { get: transcript, set: setTranscript },
     response: { get: response, set: setReponse }
   }
 
+  const [disabled, setDisabled] = useState(false)
+
+  const Disabled = { get: disabled, set: setDisabled }
+
   const value = {
     Modes,
     Movements,
-    Audio
+    Audio,
+    Disabled
   };
 
   return (

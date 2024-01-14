@@ -1,10 +1,11 @@
 import React from 'react'
+import { useButtons } from '../contexts/ButtonsContext';
 import { setDoc, doc, serverTimestamp } from 'firebase/firestore'
 import { db } from "../firebase";
 import { collection } from "firebase/firestore";
 
 const ButtonCommand = ({description, actionName}) => {
-
+  const { Modes } = useButtons()
   const actionRef = collection(db, "Actions");
 
   const buttonClick = async () => {
@@ -22,7 +23,8 @@ const ButtonCommand = ({description, actionName}) => {
         <div className='flex h-full items-center justify-center'>
           <button 
             onClick={buttonClick} 
-            className="bg-[#F5C3AF] hover:bg-[#b69082] text-norm text-black font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full"
+            className={`${!Modes["manual"].get ? 'bg-[#b69082]' : 'bg-[#F5C3AF]'} hover:bg-[#b69082] text-norm text-black font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full`}
+            disabled={!Modes["manual"].get}
           >
             O
           </button>

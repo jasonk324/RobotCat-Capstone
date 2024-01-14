@@ -27,22 +27,22 @@ const Home = () => {
 						<div>
 							Select Control Mode for the Robot ⚙️
 						</div>
-						<SwitchMode description={"Manual Mode"} onChange={handleChange} checked={isSwitched}/>
-						<SwitchMode description={"Automatic Mode"} onChange={handleChange} checked={isSwitched}/>
-						<div>
+						<SwitchMode description={"Manual Mode"} keyName={"manual"} />
+						<SwitchMode description={"Automatic Mode"} keyName={"automatic"} />
+						<div className="w-full flex flex-col gap-4 pt-3 border-t-[1px] border-t-[#afafaf]">
 							Audio input Settings
 						</div>
-						<SwitchMode description={"Laptop Microphone"} onChange={handleChange} checked={isSwitched}/>
-						<SwitchMode description={"Cat Microphone"} onChange={handleChange} checked={isSwitched}/>
-						<div>
+						<SwitchMode description={"Laptop Microphone"} keyName={"pcMic"} />
+						<SwitchMode description={"Cat Microphone"} keyName={"catMic"} />
+						<div className="w-full flex flex-col gap-4 pt-3 border-t-[1px] border-t-[#afafaf]">
 							Voice Settings
 						</div>
-						<SwitchMode description={"Cat Mode"} onChange={handleChange} checked={isSwitched}/>
-						<SwitchMode description={"Gym Bro Mode"} onChange={handleChange} checked={isSwitched}/>
-						<SwitchMode description={"Priate Mode"} onChange={handleChange} checked={isSwitched}/>
-						<div>
+						<SwitchMode description={"Cat Mode"} keyName={"voiceCat"} />
+						<SwitchMode description={"Gym Bro Mode"} keyName={"voiceGym"} />
+						<SwitchMode description={"Pirate Mode"} keyName={"voicePirate"} />
+						{/* <div>
 							<UpdateSettings />
-						</div>
+						</div> */}
 					</div>
 					<div className='darkGray-box lg:w-[33%] flex flex-col gap-4 p-6 rounded-2xl'>
 						<div className='blue-box p-2 rounded-md text-center font-bold'>
