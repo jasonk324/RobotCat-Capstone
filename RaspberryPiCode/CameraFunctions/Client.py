@@ -12,30 +12,15 @@ picam2 = Picamera2()
 
 try:
     while True:
-        # preview_config = picam2.create_preview_configuration(main={"size": (800, 600)})
-
-        # picam2.configure(preview_config)
-
-        # picam2.start_preview(Preview.QTGL)
-
         picam2.start()
 
-        # imageData = bytearray()
-        # camera.capture(imageData, format='jpeg')
-
-        # imgName = "streaming/latestImage.jpg"
-        # imgFire = storage.bucket().blob(blob.name)
-        # imgFire.upload_from_strig(imageData, content_type="image/jpeg")
-
-        print("File was updated\n")
-
-        metadata = picam2.capture_file("test.jpg")
+        metadata = picam2.capture_file("latestImage.jpg")
         
         imgFire = storage.bucket().blob("streaming/latestImage.jpg")
-        imgFire.upload_from_filename("./test.jpg")
+        imgFire.upload_from_filename("./latestImage.jpg")
 
-        time.sleep(1)
-        print(metadata)
+        time.sleep(1.6)
+        print("File was updated\n")
 finally:
     picam2.close()
 
