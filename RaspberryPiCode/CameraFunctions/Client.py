@@ -1,14 +1,42 @@
-import io 
-import socket 
-import struct 
-import time 
-from picamera2 import Picamera2
+import time
+import firebase_admin
+from firebase_admin import credentials, firestore, storage
+from picamera2 import Picamera2, Preview
 
-client_socket = socket.socket()
+cred = credentials.Certificate("../capstonecat-firebase.json")
+firebase_admin.initialize_app(cred, {
+    'storageBucket' : 'capstonecat.appspot.com'
+})
 
-client_socket.connect(('192.168.1.159', 8000))
+picam2 = Picamera2()
 
-connection = client_socket.makefile('wb')
 try:
-    camera = Picamera2()
-    camera = 
+    while True:
+        # preview_config = picam2.create_preview_configuration(main={"size": (800, 600)})
+
+        # picam2.configure(preview_config)
+
+        # picam2.start_preview(Preview.QTGL)
+
+        picam2.start()
+
+        # imageData = bytearray()
+        # camera.capture(imageData, format='jpeg')
+
+        # imgName = "streaming/latestImage.jpg"
+        # imgFire = storage.bucket().blob(blob.name)
+        # imgFire.upload_from_strig(imageData, content_type="image/jpeg")
+
+        print("File was updated\n")
+
+        metadata = picam2.capture_file("test.jpg")
+        
+        imgFire = storage.bucket().blob("streaming/latestImage.jpg")
+        imgFire.upload_from_filename("./test.jpg")
+
+        time.sleep(1)
+        print(metadata)
+finally:
+    picam2.close()
+
+
