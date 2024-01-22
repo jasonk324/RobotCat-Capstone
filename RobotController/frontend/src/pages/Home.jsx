@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
-import Header from '../components/Header'
+import CameraIcon from "../assets/Buttons/Camera.png"
 import ButtonCommand from '../components/ButtonCommand'
 import Audio from "../components/Audio"
-import ToCamera from '../components/ToCamera';
 import SwitchMode from '../components/SwitchMode';
 import UpdateSettings from '../components/UpdateSettings';
 import DPad from '../components/DPad';
+import ToPath from '../components/ToPath';
 
 const Home = () => {
   const [isSwitched, setIsSwitched] = useState(false);
@@ -16,7 +16,6 @@ const Home = () => {
 
   return (
     <>
-			<Header />
 			<div className='mt-24 px-2'>
 				<div className='w-full flex lg:flex-row flex-col gap-2'>
 
@@ -82,7 +81,7 @@ const Home = () => {
 
 				</div>
 				<div className='flex justify-end my-3'>
-          <ToCamera />
+          <ToPath Path={"/video"} Icon={CameraIcon} Name={"Camera View"}/>
 				</div>
 
 			</div>
