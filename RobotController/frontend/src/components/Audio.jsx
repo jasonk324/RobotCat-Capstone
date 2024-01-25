@@ -62,7 +62,9 @@ const Audio = () => {
 	const handleUpload = () => {
 		const messageDocRef = doc(messageRef);
 		setDoc(messageDocRef, {
-		  message: Audio['transcript'].get
+		  message: Audio['transcript'].get,
+		  location: "React",
+		  createdAt: serverTimestamp()
 		})
 
 		Audio['transcript'].set("");
