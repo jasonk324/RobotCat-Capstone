@@ -9,8 +9,10 @@ while True:
     try:
         with mic as source:
             print("Listening...")
-            audio = r.listen(source, timeout=2)
+            audio = r.listen(source)
             print("Processing...")
+            words = r.recognize_google(audio)
+            print(words)
         words = r.reocgnize(audio)
         print(words)
         if ("stop" in words.lower()):
@@ -19,4 +21,4 @@ while True:
     except:
         print("I died")
     
-    sleep(1.5)
+    sleep(4)
