@@ -13,6 +13,11 @@ while True:
             print("Processing...")
             words = r.recognize_google(audio)
             print(words)
+        words = r.reocgnize(audio)
+        print(words)
+        if ("stop" in words.lower()):
+            print("Shutting Down")
+            exit()
     except:
         print("I died")
     

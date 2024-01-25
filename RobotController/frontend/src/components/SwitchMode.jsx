@@ -6,13 +6,54 @@ const SwitchMode = ({keyName, description}) => {
   const { Modes } = useButtons()
 
   const handleSwitch = () => {
-    Modes[keyName].set(!Modes[keyName].get)
+    let m = !Modes[keyName].get
+    Modes[keyName].set(m)
 
     switch (keyName) { 
-      case "automatic": // In automatic mode
+      case "automatic": 
         Modes['manual'].set(Modes[keyName].get);
         break;
-      case "manual": // In manual mode
+      case "manual": 
+        Modes['automatic'].set(true);
+        break;
+      case "pcMic":
+        if (m) {
+          Modes["catMic"].set(false);
+        } else {
+          Modes["catMic"].set(true);
+        }
+        break;
+      case "catMic":
+        if (m) {
+          Modes["pcMic"].set(false);
+        } else {
+          Modes["pcMic"].set(true);
+        }
+        break;
+      case "voiceCat":
+        if (m) {
+          Modes["voiceGym"].set(false);
+          Modes["voicePirate"].set(false);
+        } else {
+          Modes["voiceGym"].set(true);
+        }
+        break;
+      case "voiceGym":
+        if (m) {
+          Modes["voiceCat"].set(false);
+          Modes["voicePirate"].set(false);
+        } else {
+          Modes["voiceCat"].set(true);
+        }
+        break;
+      case "voicePirate":
+        if (m) {
+          Modes["voiceCat"].set(false);
+          Modes["voiceGym"].set(false);
+        } else {
+          Modes["voiceCat"].set(true);
+        }
+        break;
     }
   }
 
