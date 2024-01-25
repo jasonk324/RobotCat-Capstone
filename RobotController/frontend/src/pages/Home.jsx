@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import CameraIcon from "../assets/Buttons/Camera.png"
 import ButtonCommand from '../components/ButtonCommand'
 import Audio from "../components/Audio"
@@ -8,11 +8,6 @@ import DPad from '../components/DPad';
 import ToPath from '../components/ToPath';
 
 const Home = () => {
-  const [isSwitched, setIsSwitched] = useState(false);
-
-  const handleChange = (checked) => {
-    setIsSwitched(checked);
-  };
 
   return (
     <>
@@ -61,12 +56,12 @@ const Home = () => {
 							<ButtonCommand description={"Smell"} actionName={"2"}/>
 						</div>
 						<div className='flex flex-row'>
-							<ButtonCommand description={"Raise Leg"} actionName={"1"}/>
-							<ButtonCommand description={"Spin 360"} actionName={"2"}/>
+							<ButtonCommand description={"Raise Leg"} actionName={"3"}/>
+							<ButtonCommand description={"Spin 360"} actionName={"4"}/>
 						</div>
 						<div className='flex flex-row'>
-							<ButtonCommand description={"Head Left"} actionName={"1"}/>
-							<ButtonCommand description={"Head Right"} actionName={"2"}/>
+							<ButtonCommand description={"Head Left"} actionName={"5"}/>
+							<ButtonCommand description={"Head Right"} actionName={"6"}/>
 						</div>
 					</div>
 

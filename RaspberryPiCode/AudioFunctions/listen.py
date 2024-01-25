@@ -12,7 +12,8 @@ while True:
             audio = r.listen(source, timeout=2)
             print("Processing...")
         words = r.reocgnize(audio)
-        if ("stop" in word.lower()):
+        print(words)
+        if ("stop" in words.lower()):
             print("Shutting Down")
             exit()
     except:

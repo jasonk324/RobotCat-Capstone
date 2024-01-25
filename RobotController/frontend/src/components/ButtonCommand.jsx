@@ -1,8 +1,7 @@
 import React from 'react'
 import { useButtons } from '../contexts/ButtonsContext';
-import { setDoc, doc, serverTimestamp } from 'firebase/firestore'
+import { setDoc, doc, serverTimestamp, collection } from 'firebase/firestore'
 import { db } from "../firebase";
-import { collection } from "firebase/firestore";
 
 const ButtonCommand = ({description, actionName}) => {
   const { Modes } = useButtons()
