@@ -3,8 +3,23 @@ import pygame
 import time
 import firebase_admin
 from firebase_admin import credentials, firestore
+from google.cloud.firestore import SERVER_TIMESTAMP
 from datetime import datetime, timezone
 import speech_recognition as sr 
+
+def submitMessage(text):
+    messageDocRef = messageRef.document()
+    print("Hi I made a document")
+    messageData = {
+        'message': text,
+        'location': "Pi",
+        'createdAt': SERVER_TIMESTAMP
+    }
+    print("Hi I made a dictionary")
+    print(messageData)
+    messageDocRef.set(messageData)
+    print("Wow I wonder if I made it here")
+
 
 def listenSound():
     try:
@@ -14,6 +29,9 @@ def listenSound():
             print("Processing...")
             words = r.recognize_google(audio)
             print(words)
+            submitMessage(str(words))
+            time.sleep(1)
+            submitMessage("complete1")
     except:
         print("I died")
 
@@ -26,33 +44,43 @@ def playTextSound(text, language='en'):
     pygame.mixer.init()
     pygame.mixer.music.set_volume(1)
     pygame.mixer.music.load(path)
-    time.sleep(10)
     pygame.mixer.music.play()
 
 def on_snapshot(col_snapshot, changes, read_time):
     print("Captured snapshot")
     for change in changes:
-        new_item = change.document.to_dict()
-        created_at = new_item.get("createdAt")
-        if created_at >= start_time:
-            if new_item['location'] == 'React':
+        docId = change.document.id
+        docNew = change.document.to_dict()
+        print(docNew)
+        createdAt = docNew.get("createdAt")
+        fromLocation = docNew.get('location') 
+        message = docNew.get('message')
+
+        if createdAt >= startTime and docId not in docSeen and fromLocation == 'React':
+            if message != 'listen1':
                 print("new message")
-                playTextSound("Hello " + new_item['message'])
-            elif new_item['message'] == '111':
+                print(message)
+                playTextSound("Hello " + message)
+            else:
                 listenSound()
+
+        docSeen.append(docId)
+        print("Updated docs seen")
+        print(docSeen)
+
+docSeen = list()
 
 r = sr.Recognizer()
 mic = sr.Microphone()
+
+startTime = datetime.now(timezone.utc)
 
 cred = credentials.Certificate("../capstonecat-firebase.json")
 firebase_admin.initialize_app(cred)
 
 db = firestore.client()
-actions_ref = db.collection('Messages')
-
-start_time = datetime.now(timezone.utc)
-
-actions_ref.on_snapshot(on_snapshot)
+messageRef = db.collection('Messages')
+messageRef.on_snapshot(on_snapshot)
 
 while True:
     pass
