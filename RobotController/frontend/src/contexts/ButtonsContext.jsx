@@ -50,11 +50,13 @@ export function ButtonsProvider({ children }) {
   }
 
   const [newConvo, setNewConvo] = useState(true)
+  const [listening, setListening] = useState(false)
   const [transcript, setTranscript] = useState("")
   const [response, setReponse] = useState("")
 
   const Audio = {
     newConvo: { get: newConvo, set: setNewConvo },
+    listening: { get: listening, set: setListening },
     transcript: { get: transcript, set: setTranscript },
     response: { get: response, set: setReponse }
   }

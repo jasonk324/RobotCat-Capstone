@@ -6,12 +6,12 @@ import Refresh from "../assets/Buttons/Refresh.png"
 import Upload from "../assets/Buttons/Upload.png"
 import HelloKitty from "../assets/Logos/HelloKittyBlackIcon.png"
 import { useButtons } from '../contexts/ButtonsContext'
-import { setDoc, doc, serverTimestamp, collection } from 'firebase/firestore'
+import { setDoc, doc, serverTimestamp, collection, onSnapshot  } from 'firebase/firestore'
 import { db } from "../firebase";
 import { getCookie } from './GetCookie'
 
 const Audio = () => {
-    const { Audio } = useButtons()
+    const { Audio, Modes } = useButtons()
     const {
       transcript,
       listening,
@@ -50,6 +50,10 @@ const Audio = () => {
     }, [transcript])
 
     useEffect(() => {
+        Audio['listening'].set(listening)
+    }, [listening])
+
+    useEffect(() => {
         if (listening === false) {
             // console.log("Hello dawg");
             // console.log(Audio['newConvo'].get);
@@ -58,6 +62,63 @@ const Audio = () => {
             Audio['newConvo'].set(false);
         } 
     }, [listening])
+
+    // let listenEnding = () => {
+    //     let unsubscribe;
+    //     const currentTime = new Date();
+
+    //     if (Audio['listening'].get && Modes['catMic'].get === true) {
+    //         unsubscribe = onSnapshot(messageRef, (snapshot) => {
+    //             const newData = snapshot.docs
+    //             .filter((doc) => !doc.data().createdAt || doc.data().createdAt.toMillis() > currentTime)
+    //             .map((doc) => ({
+    //                 ...doc.data(),
+    //             }));
+    //             console.log(newData)
+    //             return
+    //             // Audio['transcript'].set(newData);
+    //         });
+    //     };
+
+    //     return () => {
+    //         if (unsubscribe) {
+    //             unsubscribe();
+    //         }
+    //     }
+    //   }
+
+    const listenEnding = async () => {
+        let heardString = ""
+        console.log("listening for the ending")
+      
+        return new Promise((resolve, reject) => {
+            const unsubscribe = onSnapshot(messageRef, (snapshot) => {
+                const changes = snapshot.docChanges();
+                for (const change of changes) {
+                    const newDocument = change.doc.data();
+
+                    const createdAt = newDocument.createdAt.toMillis(); 
+                    const oneMinAgo = Date.now() - 10 * 1000;
+
+                    if (createdAt > oneMinAgo) { 
+
+                        console.log('New Document:', newDocument);
+                        if (newDocument['message'] === 'complete1') {
+                            Audio['listening'].set(false);
+                            Audio['transcript'].set(heardString);
+                            resolve(newDocument);
+                            unsubscribe(); 
+                        } else if (newDocument['message'] !== 'listen1') {
+                            heardString = newDocument['message']
+                        }
+
+                    }
+                }   
+            }, (error) => {
+                reject(error);
+            });
+        });
+    };
 
 	const handleUpload = () => {
 		const messageDocRef = doc(messageRef);
@@ -76,6 +137,27 @@ const Audio = () => {
         Audio["transcript"].set("");
         resetTranscript();        
     }
+
+	const handleMicOn = async () => {
+		if (Modes['pcMic'].get === true) { // In laptop mode
+			SpeechRecognition.startListening();
+		} else { // cat mic
+            Audio['listening'].set(true);
+			const messageDocRef = doc(messageRef);
+			setDoc(messageDocRef, {
+			  message: "listen1",
+			  location: "React",
+			  createdAt: serverTimestamp()
+			})
+            listenEnding();
+		}
+	}
+
+	const handleMicOff = () => {
+		if (Modes['pcMic'].get === true) { // In laptop mode
+			SpeechRecognition.stopListening();
+		} 
+	}
   
     if (!browserSupportsSpeechRecognition) {
         return <span>Browser doesn't support speech recognition.</span>;
@@ -86,19 +168,20 @@ const Audio = () => {
         <div className='flex flex-col gap-3 h-full'>
             <div className='flex flex-row gap-3 h-[45%]'>
                 <div className='flex flex-col gap-3'>
-                    {listening ? (
-                        <button className='bg-[#F5C3AF] hover:bg-[#b69082] p-3 rounded-full' onClick={SpeechRecognition.stopListening}>
-                            <img src={MicOn} className='w-12'/>
+                    {Audio['listening'].get ? (
+                        <button className='bg-[#F5C3AF] hover:bg-[#b69082] p-3 rounded-full' onClick={handleMicOff}>
+                            <img src={MicOff} className='w-12'/>
                         </button>
                     ) : (
-                        <button className='bg-[#F5C3AF] hover:bg-[#b69082] p-3 rounded-full' onClick={SpeechRecognition.startListening}>
-                            <img src={MicOff} className='w-12'/>
+                        <button className='bg-[#F5C3AF] hover:bg-[#b69082] p-3 rounded-full' onClick={handleMicOn}>
+                            <img src={MicOn} className='w-12'/>
                         </button>
                     )
                     }
 					<button 
 						onClick={handleUpload}
-						className="bg-[#F5C3AF] hover:bg-[#b69082] p-3 rounded-full"
+						className={`${!Modes["pcMic"].get ? 'bg-[#b69082]' : 'bg-[#F5C3AF]'} hover:bg-[#b69082] p-3 rounded-full`}
+                        disabled={!Modes["pcMic"].get}
 					>
 						<img src={Upload} className='w-12'/>
 					</button>
