@@ -97,7 +97,15 @@ const Audio = () => {
                 for (const change of changes) {
                     const newDocument = change.doc.data();
 
-                    const createdAt = newDocument.createdAt.toMillis(); 
+                    let createdAt = newDocument.createdAt; 
+                    
+                    if (createdAt && typeof createdAt.toMillis === 'function') {
+                        createdAt = createdAt.toMillis();
+                        console.log(createdAt);
+                      } else {
+                        console.log('CreatedAt is null or undefined.');
+                      }
+
                     const oneMinAgo = Date.now() - 10 * 1000;
 
                     if (createdAt > oneMinAgo) { 
