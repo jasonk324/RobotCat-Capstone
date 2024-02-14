@@ -14,6 +14,7 @@ export function ButtonsProvider({ children }) {
   const [voiceCat, setVoiceCat] = useState(true)
   const [voiceGym, setVoiceGym] = useState(false)
   const [voicePirate, setVoicePirate] = useState(false)
+  const [selectedVoice, setSelectedVoice] = useState("Cat")
 
   const Modes = {
     manual: { get: manual, set: setManual },
@@ -22,7 +23,8 @@ export function ButtonsProvider({ children }) {
     catMic: { get: catMic, set: setCatMic },
     voiceCat: { get: voiceCat, set: setVoiceCat },
     voiceGym: { get: voiceGym, set: setVoiceGym },
-    voicePirate: { get: voicePirate, set: setVoicePirate }
+    voicePirate: { get: voicePirate, set: setVoicePirate },
+    selectedVoice : { get: selectedVoice, set: setSelectedVoice }
   }
 
   const [up, setUp] = useState(false)

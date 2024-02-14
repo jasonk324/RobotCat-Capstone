@@ -31,6 +31,7 @@ const SwitchMode = ({keyName, description}) => {
         }
         break;
       case "voiceCat":
+        Modes["selectedVoice"].set("Cat")
         if (m) {
           Modes["voiceGym"].set(false);
           Modes["voicePirate"].set(false);
@@ -39,6 +40,7 @@ const SwitchMode = ({keyName, description}) => {
         }
         break;
       case "voiceGym":
+        Modes["selectedVoice"].set("Gym Bro")
         if (m) {
           Modes["voiceCat"].set(false);
           Modes["voicePirate"].set(false);
@@ -47,6 +49,7 @@ const SwitchMode = ({keyName, description}) => {
         }
         break;
       case "voicePirate":
+        Modes["selectedVoice"].set("Pirate")
         if (m) {
           Modes["voiceCat"].set(false);
           Modes["voiceGym"].set(false);
@@ -55,6 +58,7 @@ const SwitchMode = ({keyName, description}) => {
         }
         break;
     }
+    console.log(Modes["selectedVoice"].get)
   }
 
   return (

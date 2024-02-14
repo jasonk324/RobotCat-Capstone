@@ -8,7 +8,7 @@ import HelloKitty from "../assets/Logos/HelloKittyBlackIcon.png"
 import { useButtons } from '../contexts/ButtonsContext'
 import { setDoc, doc, serverTimestamp, collection, onSnapshot  } from 'firebase/firestore'
 import { db } from "../firebase";
-import { getCookie } from './GetCookie'
+// import { getCookie } from './GetCookie'
 
 const Audio = () => {
     const { Audio, Modes } = useButtons()
@@ -18,42 +18,47 @@ const Audio = () => {
       resetTranscript,
       browserSupportsSpeechRecognition
     } = useSpeechRecognition();
-	const messageRef = collection(db, "Messages");
-    
-	// Work in progress
-	// const csrftoken = getCookie('csrftoken');
+	const messageRef = collection(db, "Messages")
 
 	// Work in progress
-    // const sendTranscript = async () => {
-    //     let formData = new FormData()
-    //     formData.append("newConvo", Audio["newConvo"].get)
-    //     formData.append("transcript", Audio["transcript"].get)
+    const sendTranscript = async () => {
+        let formData = new FormData()
 
-    //     await fetch(`http://127.0.0.1:5000/chatGPT`, {
-    //         method: "POST",
-    //         headers: {
-    //           'X-CSRFToken': csrftoken
-    //         },
-    //         body: formData,
-    //       })
-    // }
+        formData.append("transcript", Audio["transcript"].get)
+        formData.append("personality", Modes["selectedVoice"].get)
+
+        await fetch(`http://127.0.0.1:5000/chatGPTResponse`, {
+            method: "POST",
+            // headers: {
+            //   'X-CSRFToken': csrftoken
+            // },
+            body: formData,
+          })
+            .then((response) => response.json())
+            .then((data) => {
+                Audio["response"].set(data['Response']);
+                console.log(data);
+            })
+            .catch((error) => console.log(error));
+    }
 
 	// Work in progress
-    // const testing = async () => {
-    //     let response = await fetch(`http://127.0.0.1:5000/testing`)
-    //     let pk_data = await response.json()
-    //     console.log(pk_data)
-    // }
+    const testing = async () => {
+        let response = await fetch(`http://127.0.0.1:5000/testing`)
+        let pk_data = await response.json()
+        console.log(pk_data)
+    }
 
     useEffect(() => {
         Audio["transcript"].set(transcript)
     }, [transcript])
 
-    useEffect(() => {
-        Audio['listening'].set(listening)
-    }, [listening])
+    // useEffect(() => {
+    //     Audio['listening'].set(listening)
+    // }, [listening])
 
     useEffect(() => {
+        Audio['listening'].set(listening)
         if (listening === false) {
             // console.log("Hello dawg");
             // console.log(Audio['newConvo'].get);
@@ -62,30 +67,6 @@ const Audio = () => {
             Audio['newConvo'].set(false);
         } 
     }, [listening])
-
-    // let listenEnding = () => {
-    //     let unsubscribe;
-    //     const currentTime = new Date();
-
-    //     if (Audio['listening'].get && Modes['catMic'].get === true) {
-    //         unsubscribe = onSnapshot(messageRef, (snapshot) => {
-    //             const newData = snapshot.docs
-    //             .filter((doc) => !doc.data().createdAt || doc.data().createdAt.toMillis() > currentTime)
-    //             .map((doc) => ({
-    //                 ...doc.data(),
-    //             }));
-    //             console.log(newData)
-    //             return
-    //             // Audio['transcript'].set(newData);
-    //         });
-    //     };
-
-    //     return () => {
-    //         if (unsubscribe) {
-    //             unsubscribe();
-    //         }
-    //     }
-    //   }
 
     const listenEnding = async () => {
         let heardString = ""
@@ -139,7 +120,20 @@ const Audio = () => {
 		Audio['transcript'].set("");
 	}
 
-    const handleRefresh = () => {
+    const handleRefresh = async () => {
+        let formData = new FormData()
+        formData.append("personality", Modes["selectedVoice"].get)
+
+        await fetch(`http://127.0.0.1:5000/chatGPTReset`, {
+            method: "POST",
+            body: formData,
+          })
+            .then((response) => response.json())
+            .then((data) => {
+                Audio["response"].set(data['Response']);
+                console.log(data);
+            })
+            .catch((error) => console.log(error));
         Audio['newConvo'].set(true);
         Audio["response"].set("");
         Audio["transcript"].set("");
@@ -187,7 +181,8 @@ const Audio = () => {
                     )
                     }
 					<button 
-						onClick={handleUpload}
+						// onClick={handleUpload}
+                        onClick={sendTranscript}
 						className={`${!Modes["pcMic"].get ? 'bg-[#b69082]' : 'bg-[#F5C3AF]'} hover:bg-[#b69082] p-3 rounded-full`}
                         disabled={!Modes["pcMic"].get}
 					>
