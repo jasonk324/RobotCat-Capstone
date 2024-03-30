@@ -2,37 +2,19 @@
 #include <Servo.h>
 
 Servo servo1;
-Servo servo2;
-int pos = 0;    // variable to store the servo position
+int pos = 0;    
 char piInput;
 
 void servoSpin() {
 
   switch (piInput) {
     case '1':
-      Serial.println("SERVO 1 IS ON");
-      for (pos = 0; pos <= 180; pos += 1) { 
-        servo1.write(pos);            
-        delay(20);                    
-      }
-      for (pos = 180; pos >= 0; pos -= 1) { 
-        servo1.write(pos);         
-        delay(20);                     
-      }
+      servo1.write(0);            
       break;
     case '2':
-      Serial.println("SERVO 2 IS ON");
-      for (pos = 0; pos <= 180; pos += 1) { 
-        servo2.write(pos);            
-        delay(20);                    
-      }
-      for (pos = 180; pos >= 0; pos -= 1) { 
-        servo2.write(pos);         
-        delay(20);                     
-      }
+      servo1.write(90);            
       break;
     default:
-      Serial.println("Nothing happened");
       break;
     }
 }
@@ -40,7 +22,6 @@ void servoSpin() {
 void setup() {
   Serial.begin(9600);
   servo1.attach(9); 
-  servo2.attach(11);
 }
 
 void loop() {
