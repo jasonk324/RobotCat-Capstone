@@ -11,6 +11,8 @@ export function ButtonsProvider({ children }) {
   const [automatic, setAutomatic] = useState(false)
   const [pcMic, setPcMic] = useState(true)
   const [catMic, setCatMic] = useState(false)
+  const [aiMode, setAiMode] = useState(false)
+  const [talkieMode, setTalkieMode] = useState(true)
   const [voiceCat, setVoiceCat] = useState(true)
   const [voiceGym, setVoiceGym] = useState(false)
   const [voicePirate, setVoicePirate] = useState(false)
@@ -19,6 +21,8 @@ export function ButtonsProvider({ children }) {
   const Modes = {
     manual: { get: manual, set: setManual },
     automatic: { get: automatic, set: setAutomatic },
+    aiMode: { get: aiMode, set: setAiMode },
+    talkieMode: { get: talkieMode, set: setTalkieMode },
     pcMic: { get: pcMic, set: setPcMic },
     catMic: { get: catMic, set: setCatMic },
     voiceCat: { get: voiceCat, set: setVoiceCat },

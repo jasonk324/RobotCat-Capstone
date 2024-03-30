@@ -1,13 +1,16 @@
 import React from 'react'
 import CameraIcon from "../assets/Buttons/Camera.png"
 import ButtonCommand from '../components/ButtonCommand'
-import Audio from "../components/Audio"
+import ArtificialIntelligence from "../components/ArtificialIntelligence"
 import SwitchMode from '../components/SwitchMode';
-import UpdateSettings from '../components/UpdateSettings';
 import DPad from '../components/DPad';
 import ToPath from '../components/ToPath';
+import SignOut from '../components/SignOut';
+import WalkieTalkie from '../components/WalkieTalkie';
+import { useButtons } from '../contexts/ButtonsContext';
 
 const Home = () => {
+	const { Modes } = useButtons();
 
   return (
     <>
@@ -18,18 +21,21 @@ const Home = () => {
 					<div className='blue-box p-2 rounded-md text-center font-bold'>
 						Primary Settings
 					</div>
-					<div>
+					{/* <div>
 						Select Control Mode for the Robot ⚙️
 					</div>
-					<SwitchMode description={"Manual Mode"} keyName={"manual"} />
-					<SwitchMode description={"Automatic Mode"} keyName={"automatic"} />
-					<div className="w-full flex flex-col gap-4 pt-3 border-t-[1px] border-t-[#afafaf]">
-						Audio input Settings
+						<SwitchMode description={"Manual Mode"} keyName={"manual"} />
+						<SwitchMode description={"Automatic Mode"} keyName={"automatic"} /> */}
+					<div className="w-full flex flex-col gap-4 pt-3">
+						Audio Settings
 					</div>
-					<SwitchMode description={"Laptop Microphone"} keyName={"pcMic"} />
-					<SwitchMode description={"Cat Microphone"} keyName={"catMic"} />
+					<div>
+						This robot has been implemented with built in personalities and with the ability for audio to be delivered through this controller to speak through the cat like a Walkie-Talkie. Select which mode below:
+					</div>
+					<SwitchMode description={"Artificial Intelligence Mode"} keyName={"aiMode"} />
+					<SwitchMode description={"Walkie Talkie Mode"} keyName={"talkieMode"} />
 					<div className="w-full flex flex-col gap-4 pt-3 border-t-[1px] border-t-[#afafaf]">
-						Voice Settings
+						Voice Settings (Usable only while in AI mode)
 					</div>
 					<SwitchMode description={"Cat Mode"} keyName={"voiceCat"} />
 					<SwitchMode description={"Gym Bro Mode"} keyName={"voiceGym"} />
@@ -49,16 +55,16 @@ const Home = () => {
 						Additional Movements
 					</div>
 					<div className='flex flex-row'>
-						<ButtonCommand description={"Get up"} actionName={"1"}/>
-						<ButtonCommand description={"Smell"} actionName={"2"}/>
+						<ButtonCommand description={"Stand"} actionName={"a"}/>
+						<ButtonCommand description={"Walk"} actionName={"8"}/>
 					</div>
 					<div className='flex flex-row'>
-						<ButtonCommand description={"Raise Leg"} actionName={"3"}/>
-						<ButtonCommand description={"Spin 360"} actionName={"4"}/>
+						<ButtonCommand description={"Backward"} actionName={"b"}/>
+						<ButtonCommand description={"Stand Tall"} actionName={"s"}/>
 					</div>
 					<div className='flex flex-row'>
-						<ButtonCommand description={"Head Left"} actionName={"5"}/>
-						<ButtonCommand description={"Head Right"} actionName={"6"}/>
+						<ButtonCommand description={"Forwards"} actionName={"w"}/>
+						<ButtonCommand description={"Happy"} actionName={"h"}/>
 					</div>
 				</div>
 
@@ -67,12 +73,13 @@ const Home = () => {
 						Audio Controls
 					</div>
 					<div className='lg:flex-1 h-96'>
-						<Audio />
+						{Modes["aiMode"].get ? <ArtificialIntelligence /> : <WalkieTalkie />}
 					</div>
 				</div>
 
 			</div>
-			<div className='flex justify-end my-3'>
+			<div className='flex justify-between my-3'>
+				<SignOut />
 				<ToPath Path={"/video"} Icon={CameraIcon} Name={"Camera View"}/>
 			</div>
 

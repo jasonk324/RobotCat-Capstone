@@ -16,6 +16,21 @@ const SwitchMode = ({keyName, description}) => {
       case "manual": 
         Modes['automatic'].set(true);
         break;
+      case "aiMode":
+        console.log(Modes["talkieMode"].get)
+        if (m) {
+          Modes["talkieMode"].set(false);
+        } else {
+          Modes["talkieMode"].set(true);
+        }
+        break;
+      case "talkieMode":
+        console.log(Modes["aiMode"].get)
+        if (m) {
+          Modes["aiMode"].set(false);
+        } else {
+          Modes["aiMode"].set(true);
+        }
       case "pcMic":
         if (m) {
           Modes["catMic"].set(false);
@@ -58,7 +73,7 @@ const SwitchMode = ({keyName, description}) => {
         }
         break;
     }
-    console.log(Modes["selectedVoice"].get)
+    // console.log(Modes["selectedVoice"].get)
   }
 
   return (

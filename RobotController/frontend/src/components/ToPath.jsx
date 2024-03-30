@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from "react-router-dom"
 
-const ToPath = ({Path, Icon, Name}) => {
+const ToPath = ({Path, Icon, Name, }) => {
   return (
     <Link to={Path}>
         <button 

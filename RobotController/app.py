@@ -1,4 +1,5 @@
 from flask import Flask, request, jsonify
+from flask.helpers import send_from_directory
 from flask_cors import CORS, cross_origin
 import firebase_admin
 from firebase_admin import credentials, firestore
@@ -6,8 +7,8 @@ import json
 import openai
 from chatGPT.variable import apiKey, defaultContexts, defaultOutputs
 
-app = Flask(__name__)
-cors = CORS(app)
+app = Flask(__name__, static_folder="frontend/build", static_url_path="")
+CORS(app)
 # app.config['CORS_HEADERS'] = 'Content-Type'
 
 def chatGPTOutput(msgHistory, newInput):
@@ -35,12 +36,13 @@ def obtainDocID(personality):
     return documentId
 
 @app.route("/testing", methods=['GET'])
+@cross_origin()
 def testing_endpoint():
     print("Hello It worked")
     return jsonify({"Success": "Yay"})
 
 @app.route('/chatGPTResponse', methods=['POST', 'OPTIONS'])
-@cross_origin(supports_credentials=True)
+@cross_origin()
 def chatGPTResponse_endpoint():
     data = request.form
     print(data)
@@ -67,6 +69,7 @@ def chatGPTResponse_endpoint():
     return response
 
 @app.route('/chatGPTReset', methods=['POST'])
+@cross_origin()
 def chatGPTReset_endpoint():
     data = request.form
     personality = data['personality']
@@ -86,6 +89,11 @@ def chatGPTReset_endpoint():
 
     return jsonify({'success': "Nice Job"})
 
+@app.route("/")
+@cross_origin()
+def server():
+    return send_from_directory(app.static_folder, "index.html")
+
 if __name__ == '__main__':
     # Firebase initalization
     cred = credentials.Certificate("capstonecat-firebase.json") 
@@ -96,4 +104,5 @@ if __name__ == '__main__':
     openai.api_key = apiKey
 
     # Start flask 
-    app.run(debug=True)
+    # app.run(debug=True)
+    app.run()
